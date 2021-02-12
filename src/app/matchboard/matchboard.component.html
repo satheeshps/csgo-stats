@@ -1,0 +1,58 @@
+<mat-accordion class="example-headers-align" multi>
+  <mat-expansion-panel [expanded]="true" *ngFor="let match of matches">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{match.t1.clan}} vs {{match.t2.clan}}
+      </mat-panel-title>
+      <mat-panel-description>
+        24th June 2020
+        <!-- <mat-icon>account_circle</mat-icon> -->
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%;">
+      <div fxFlex style="width: 100%;">
+        <div fxLayout="column" fxLayoutAlign="start center" style="padding: 20px;width: 100%;">
+          <div fxFlex class="score">{{match.t1.score}}</div>
+          <!-- <div class="score">{{t1.name}}</div> -->
+          <div fxFlex class="clan">{{match.t1.clan}}</div>
+          <!-- <div fxFlex>{{t1.logo}}</div> -->
+          <!-- <div fxFlex>{{t1.flagImage}}</div> -->
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center"
+            style="margin-top: 40px;width: 100%;height: 100%;">
+            <mat-table [dataSource]="match.t1.members" class="mat-elevation-z8" style="width: 100%;margin-top: 20px;">
+              <ng-container matColumnDef="members">
+                <mat-header-cell *matHeaderCellDef> Players </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element}} </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+      <div fxFlex style="width: 100%;">
+        <div fxLayout="column" fxLayoutAlign="start center" style="padding: 20px;width: 100%;">
+          <div fxFlex class="score">{{match.t2.score}}</div>
+          <!-- <div class="score">{{t1.name}}</div> -->
+          <div fxFlex class="clan">{{match.t2.clan}}</div>
+          <!-- <div fxFlex>{{t1.logo}}</div> -->
+          <!-- <div fxFlex>{{t1.flagImage}}</div> -->
+          <div fxFlex fxLayout="column" fxLayoutAlign="center center"
+            style="margin-top: 40px;width: 100%;height: 100%;">
+            <mat-table [dataSource]="match.t2.members" class="mat-elevation-z8" style="width: 100%;margin-top: 20px;">
+              <ng-container matColumnDef="members">
+                <mat-header-cell *matHeaderCellDef> Players </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element}} </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

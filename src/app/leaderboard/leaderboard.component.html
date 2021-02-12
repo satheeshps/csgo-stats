@@ -1,0 +1,56 @@
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container matColumnDef="clanTag">
+    <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.clanTag ? element.clanTag + '-' + element.clanName: element.clanName}}</mat-cell>
+  </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <img width="32" height="32" src="https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/avatars/f4/f45d681eef6d321182d8a4fbb3688d7fdafe45bc_full.jpg" />
+        {{element.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="assists">
+      <mat-header-cell *matHeaderCellDef> Assists </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.assists}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="deaths">
+      <mat-header-cell *matHeaderCellDef> deaths </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.deaths}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="headShotKills">
+      <mat-header-cell *matHeaderCellDef> headShotKills </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.headShotKills}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="killReward">
+      <mat-header-cell *matHeaderCellDef> killReward </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.killReward}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kills">
+      <mat-header-cell *matHeaderCellDef> kills </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.kills}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="liveTime">
+      <mat-header-cell *matHeaderCellDef> liveTime </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.liveTime}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="moneySaved">
+      <mat-header-cell *matHeaderCellDef> moneySaved </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.moneySaved}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="objective">
+      <mat-header-cell *matHeaderCellDef> objective </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.objective}} </mat-cell>
+    </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>

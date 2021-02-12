@@ -1,0 +1,19 @@
+version: '3'
+services:
+  csgo-stats:
+    restart: always
+    container_name: csgo-stats
+    image: csgo-stats
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - ./dist/assets:/replays
+      - ./dist/db:/db
+    environment:
+      - BASE_PATH=/app
+      - DEM_PATH=/replays
+      - DB_PATH=/db
+      - NODE_ENV=production
+    ports:
+      - 8080:8080
