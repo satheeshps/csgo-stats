@@ -65,6 +65,11 @@ function writeLeaderBoard(players) {
 
 function parseDems() {
   fs.readFile(DEM_FILE, (err, buffer) => {
+    if(err) {
+      console.log('read dem file err: ' + DEM_FILE + ', ' + err);
+      return;
+    }
+
     demoFile.gameEvents.on("round_end", e => {
       console.log(
         "*** Round ended '%s' (reason: %s)",
@@ -73,7 +78,7 @@ function parseDems() {
       );
     });
 
-    demoFile.gameEvents.on("round_officially_ended", function () { });
+    // demoFile.gameEvents.on("round_officially_ended", function () { });
 
     demoFile.on("end", e => {
       if (e.error) {

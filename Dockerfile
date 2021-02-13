@@ -1,4 +1,4 @@
-FROM node:8
+FROM node:15
 
 WORKDIR /app
 COPY ./dist/ /app/
