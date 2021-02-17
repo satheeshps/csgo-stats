@@ -1,6 +1,6 @@
 import { NumberSymbol } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 export class PlayerRank {
   clanTag: string;
@@ -59,6 +59,9 @@ export class PlayerRank {
   styleUrls: ['./leaderboard.component.css']
 })
 export class LeaderboardComponent implements OnInit {
+  @Input()
+  members: PlayerRank[] = [];
+
   displayedColumns: string[] = ['clanTag',
     'name',
     'assists',
@@ -69,18 +72,19 @@ export class LeaderboardComponent implements OnInit {
     'liveTime', 
     'moneySaved', 
     'objective'];
-  dataSource: PlayerRank[] = [];
   
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    if(this.members.length == 0) {
     this.http
       .get<PlayerRank[]>('/leaderboard')
       .subscribe(
         (restItems: PlayerRank[]) => {
-          this.dataSource = restItems;
+          this.members = restItems;
         }
       )
+    }
   }
 
 }

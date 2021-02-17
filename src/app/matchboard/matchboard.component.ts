@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { PlayerRank } from '../leaderboard/leaderboard.component';
 
 export class Team {
   name: string;
   score: number;
   clan: string;
-  members: string[];
+  members: PlayerRank[];
   logo: string;
   flagImage: string;
 
-  constructor(name: string, score: number, clan: string, members: string[], logo: string, flagImage: string) {
+  constructor(name: string, score: number, clan: string, members: PlayerRank[], logo: string, flagImage: string) {
     this.name = name;
     this.score = score;
     this.clan = clan;
@@ -19,7 +20,7 @@ export class Team {
   }
 
   static empty(): Team {
-    return new Team('ct', 10, 'devillz', ['a', 'a', 'a', 'a', 'a'], 'SDS', 'IN');
+    return new Team('ct', 10, 'devillz', [], 'SDS', 'IN');
   }
 }
 

@@ -1,4 +1,4 @@
-<mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-table [dataSource]="members" class="mat-elevation-z8">
   <ng-container matColumnDef="clanTag">
     <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
     <mat-cell *matCellDef="let element">{{element.clanTag ? element.clanTag + '-' + element.clanName: element.clanName}}</mat-cell>

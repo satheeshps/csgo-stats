@@ -20,7 +20,7 @@
           <!-- <div fxFlex>{{t1.flagImage}}</div> -->
           <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             style="margin-top: 40px;width: 100%;height: 100%;">
-            <mat-table [dataSource]="match.t1.members" class="mat-elevation-z8" style="width: 100%;margin-top: 20px;">
+            <!-- <mat-table [dataSource]="match.t1.members" class="mat-elevation-z8" style="width: 100%;margin-top: 20px;">
               <ng-container matColumnDef="members">
                 <mat-header-cell *matHeaderCellDef> Players </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element}} </mat-cell>
@@ -28,7 +28,8 @@
 
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
+            </mat-table> -->
+            <app-leaderboard [members]="match.t2.members"></app-leaderboard>
           </div>
         </div>
       </div>
@@ -41,7 +42,7 @@
           <!-- <div fxFlex>{{t1.flagImage}}</div> -->
           <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             style="margin-top: 40px;width: 100%;height: 100%;">
-            <mat-table [dataSource]="match.t2.members" class="mat-elevation-z8" style="width: 100%;margin-top: 20px;">
+            <!-- <mat-table [dataSource]="match.t2.members" class="mat-elevation-z8" style="width: 100%;margin-top: 20px;">
               <ng-container matColumnDef="members">
                 <mat-header-cell *matHeaderCellDef> Players </mat-header-cell>
                 <mat-cell *matCellDef="let element"> {{element}} </mat-cell>
@@ -49,7 +50,8 @@
 
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
+            </mat-table> -->
+            <app-leaderboard [members]="match.t2.members"></app-leaderboard>
           </div>
         </div>
       </div>
