@@ -6,3 +6,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-tab-body-wrapper {
     height: 100%;
 }
+
+@font-face {
+    font-family: oi;
+    src: url(assets/fonts/Oi-Regular.ttf);
+}
+
+@font-face {
+    font-family: FrederickatheGreat;
+    src: url(assets/fonts/FrederickatheGreat-Regular.ttf);
+}

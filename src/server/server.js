@@ -8,22 +8,26 @@ const sqlite3 = require('sqlite3').verbose();
 
 init();
 
-const DBPATH = process.env.DB_PATH + '/csgo_db';
+const DBPATH = process.env.BASE_PATH + '/db/csgo_db';
 
-function bootstrap() {
-  const dbPath = process.env.DB_PATH + '/csgo_db';
+function bootstrap(cb) {
+  const dbPath = process.env.BASE_PATH + '/db/csgo_db';
   const db = new sqlite3.Database(dbPath);
   db.serialize(function () {
     db.run("CREATE TABLE IF NOT EXISTS matches " +
       "(id TEXT PRIMARY KEY, tName TEXT, tScore TEXT, tClan TEXT, tMembers TEXT, tLogo TEXT, tFlagImage TEXT," +
-      "ctName TEXT, ctScore TEXT, ctClan TEXT, ctMembers TEXT, ctLogo TEXT, ctFlagImage TEXT)");
-
-    db.run("CREATE TABLE IF NOT EXISTS player_scores " +
-      "(match_id TEXT, clanTag TEXT, name TEXT, clanName TEXT, assists NUMBER, deaths NUMBER, headShotKills NUMBER, killReward NUMBER," +
-      "kills NUMBER, liveTime NUMBER, moneySaved NUMBER, objective NUMBER, cashSpendTotal NUMBER, mvps NUMBER, score NUMBER, steamId TEXT PRIMARY KEY," +
-      "FOREIGN KEY(match_id) REFERENCES matches(id))");
+      "ctName TEXT, ctScore TEXT, ctClan TEXT, ctMembers TEXT, ctLogo TEXT, ctFlagImage TEXT)", () => {
+        db.run("CREATE TABLE IF NOT EXISTS player_scores " +
+          "(match_id TEXT, clanTag TEXT, name TEXT, clanName TEXT, assists NUMBER, deaths NUMBER, headShotKills NUMBER, killReward NUMBER," +
+          "kills NUMBER, liveTime NUMBER, moneySaved NUMBER, objective NUMBER, cashSpendTotal NUMBER, mvps NUMBER, score NUMBER, teamName TEXT, teamNumber NUMBER," +
+          "threeKills NUMBER, fourKills NUMBER, fiveKills  NUMBER, flashedEnemies NUMBER, steamId TEXT PRIMARY KEY," +
+          "FOREIGN KEY(match_id) REFERENCES matches(id))", () => {
+            db.close();
+            console.log('created the tables');
+            cb();
+          });
+      });
   });
-  db.close();
 }
 
 function init() {
@@ -32,54 +36,50 @@ function init() {
   if (!process.env.NODE_ENV) {
     process.env.BASE_PATH = './dist';
     process.env.DEM_PATH = './dist/assets';
-    process.env.DB_PATH = './dist/db';
   }
 
   if (!fs.existsSync(process.env.BASE_PATH)) {
     fs.mkdirSync(process.env.BASE_PATH);
   }
 
+  if (!fs.existsSync(process.env.BASE_PATH)) {
+    fs.mkdirSync(process.env.BASE_PATH + '/db');
+  }
+
   if (!fs.existsSync(process.env.DEM_PATH)) {
     fs.mkdirSync(process.env.DEM_PATH);
   }
 
-  if (!fs.existsSync(process.env.DB_PATH)) {
-    fs.mkdirSync(process.env.DB_PATH);
-  }
-
-  bootstrap();
+  bootstrap(() => {
+    console.log('bootstrap complete');
+  });
 }
 
 function readMatches(cb) {
   const db = new sqlite3.Database(DBPATH);
   db.serialize(function () {
-    const matches = [];
     db.all("SELECT m.id, m.tName, m.tScore, m.tClan, m.tMembers, m.tLogo, m.tFlagImage, m.ctName, m.ctScore, m.ctClan," +
-      "m.ctMembers, m.ctLogo, m.ctFlagImage, ps.clanTag, ps.name, ps.clanName, ps.assists, ps.deaths, ps.headShotKills, " +
+      "m.ctMembers, m.ctLogo, m.ctFlagImage, ps.teamNumber, ps.clanTag, ps.name, ps.clanName, ps.assists, ps.deaths, ps.headShotKills, " +
       "ps.killReward, ps.kills, ps.liveTime, ps.moneySaved, ps.objective, ps.cashSpendTotal, ps.mvps, ps.score, ps.steamId" +
-      " FROM matches as m, player_scores as ps WHERE m.id = ps.match_id", function (err, rows) {
+      " FROM matches as m LEFT JOIN player_scores as ps ON m.id = ps.match_id", function (err, rows) {
         if (err) {
           console.log('db error: ' + err);
           return;
         }
         if (rows) {
-          var match;
+          const match = {};
           rows.forEach(row => {
-            if (matches.indexOf(match) < 0) {
-              match = {
+            if (!match[row.id]) {
+              match[row.id] = {
                 t1: {
-                  name: row.tName, score: row.tScore, clan: row.tClan, logo: row.tLogo, flagImage: row.tFlagImage
+                  name: row.tName, memberIds: row.tMembers, members: [], score: row.tScore, clan: row.tClan, logo: row.tLogo, flagImage: row.tFlagImage
                 }, t2: {
-                  name: row.ctName, score: row.ctScore, clan: row.ctClan, logo: row.ctLogo, flagImage: row.ctFlagImage
+                  name: row.ctName, memberIds: row.ctMembers, members: [], score: row.ctScore, clan: row.ctClan, logo: row.ctLogo, flagImage: row.ctFlagImage
                 }
               }
-              match.t1.members = [];
-              match.t2.members = [];
-
-              matches.push(match);
             }
-            var team = match.clanName == match.tClan ? match.t1 : match.t2;
-            team.members.push({
+
+            const member = {
               clanTag: row.clanTag,
               name: row.name,
               clanName: row.clanName,
@@ -95,8 +95,18 @@ function readMatches(cb) {
               mvps: row.mvps,
               score: row.score,
               steamId: row.steamId
-            });
+            }
+
+            if (row.teamNumber === 2)
+              match[row.id].t1.members.push(member);
+            else
+              match[row.id].t2.members.push(member);
           });
+
+          const matches = [];
+          for (const [key, value] of Object.entries(match)) {
+            matches.push(value);
+          }
           cb(matches);
         }
       });

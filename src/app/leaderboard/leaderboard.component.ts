@@ -14,11 +14,15 @@ export class PlayerRank {
   liveTime: number;
   moneySaved: number;
   objective: number;
-
   cashSpendTotal: number;
-  
   mvps: number;
   score: number;
+  teamName: string;
+  teamNumber: number;
+  threeKills: number;
+  fourKills: number;
+  fiveKills: number;
+  flashedEnemies: number;
   steamId: string;
 
   constructor(assists: number, damage: number, deaths: number,
@@ -34,7 +38,13 @@ export class PlayerRank {
     score: number,
     clanName: string,
     steamId: string,
-    name: string) {
+    name: string,
+    teamName: string,
+    teamNumber: number,
+    threeKills: number,
+    fourKills: number,
+    fiveKills: number,
+    flashedEnemies: number) {
     this.name = name;
     this.score = score;
     this.assists = assists;
@@ -50,6 +60,29 @@ export class PlayerRank {
     this.mvps = mvps;
     this.clanName = clanName;
     this.steamId = steamId;
+    this.teamName = teamName;
+    this.teamNumber = teamNumber;
+    this.threeKills = threeKills;
+    this.fourKills = fourKills;
+    this.fiveKills = fiveKills;
+    this.flashedEnemies = flashedEnemies;
+  }
+
+  static empty(): PlayerRank {
+    return new PlayerRank(0, 0, 0, 0, 0, 0,
+      0,
+      0,
+      0,
+      0,
+      'devillz',
+      0,
+      0,
+      'devillz',
+      '13123',
+      'name',
+      'ct',
+      3,
+      0, 0, 0, 0);
   }
 }
 
@@ -62,29 +95,39 @@ export class LeaderboardComponent implements OnInit {
   @Input()
   members: PlayerRank[] = [];
 
-  displayedColumns: string[] = ['clanTag',
-    'name',
+  @Input()
+  excludes: string[] = ['objective', 'moneySaved', 'liveTime', 'cashSpendTotal', 'killReward', 'threeKills', 'fourKills', 'fiveKills', 'flashedEnemies'];
+
+  displayedColumns: string[] = ['name',
     'assists',
-    'deaths', 
-    'headShotKills', 
-    'killReward', 
-    'kills', 
-    'liveTime', 
-    'moneySaved', 
-    'objective'];
-  
-  constructor(private http: HttpClient) {}
+    'deaths',
+    'headShotKills',
+    'killReward',
+    'kills',
+    'liveTime',
+    'moneySaved',
+    'objective',
+    'cashSpendTotal',
+    'mvps',
+    'score',
+    'threeKills',
+    'fourKills',
+    'fiveKills',
+    'flashedEnemies'];
+
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
-    if(this.members.length == 0) {
-    this.http
-      .get<PlayerRank[]>('/leaderboard')
-      .subscribe(
-        (restItems: PlayerRank[]) => {
-          this.members = restItems;
-        }
-      )
+    this.displayedColumns = this.displayedColumns.filter(i => this.excludes.indexOf(i) < 0);
+    if (this.members.length == 0) {
+      // this.members = [PlayerRank.empty(), PlayerRank.empty()];
+      this.http
+        .get<PlayerRank[]>('/leaderboard')
+        .subscribe(
+          (restItems: PlayerRank[]) => {
+            this.members = restItems;
+          }
+        )
     }
   }
-
 }

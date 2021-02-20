@@ -45,6 +45,7 @@ export class MatchboardComponent implements OnInit {
   constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    // this.matches = [Match.empty(), Match.empty()];
     this.http
       .get<Match[]>('/matches')
       .subscribe(
