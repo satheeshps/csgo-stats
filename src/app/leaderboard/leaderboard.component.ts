@@ -1,6 +1,9 @@
 import { NumberSymbol } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 
 export class PlayerRank {
   clanTag: string;
@@ -91,12 +94,21 @@ export class PlayerRank {
   templateUrl: './leaderboard.component.html',
   styleUrls: ['./leaderboard.component.css']
 })
-export class LeaderboardComponent implements OnInit {
+export class LeaderboardComponent implements OnInit, AfterViewInit {
   @Input()
   members: PlayerRank[] = [];
 
   @Input()
+  height: string = '';
+
+  @Input()
+  elevation: boolean = false;
+
+  @Input()
   excludes: string[] = ['objective', 'moneySaved', 'liveTime', 'cashSpendTotal', 'killReward', 'threeKills', 'fourKills', 'fiveKills', 'flashedEnemies'];
+
+  @ViewChild(MatSort, { static: true })
+  sort: MatSort = new MatSort;
 
   displayedColumns: string[] = ['name',
     'assists',
@@ -115,19 +127,32 @@ export class LeaderboardComponent implements OnInit {
     'fiveKills',
     'flashedEnemies'];
 
-  constructor(private http: HttpClient) { }
+  dataSource: MatTableDataSource<PlayerRank>;
 
-  ngOnInit(): void {
-    this.displayedColumns = this.displayedColumns.filter(i => this.excludes.indexOf(i) < 0);
-    if (this.members.length == 0) {
-      // this.members = [PlayerRank.empty(), PlayerRank.empty()];
+  constructor(private http: HttpClient) {
+    this.dataSource = new MatTableDataSource(this.members);
+  }
+
+  ngAfterViewInit() {
+    // this.members = [PlayerRank.empty(), PlayerRank.empty()];
+    // this.dataSource = new MatTableDataSource(this.members);
+    if (this.members.length === 0) {
       this.http
         .get<PlayerRank[]>('/leaderboard')
         .subscribe(
           (restItems: PlayerRank[]) => {
             this.members = restItems;
+            this.dataSource = new MatTableDataSource(this.members);
+            this.dataSource.sort = this.sort;
           }
         )
+    } else {
+      this.dataSource = new MatTableDataSource(this.members);
+      this.dataSource.sort = this.sort;
     }
+  }
+
+  ngOnInit(): void {
+    this.displayedColumns = this.displayedColumns.filter(i => this.excludes.indexOf(i) < 0);
   }
 }

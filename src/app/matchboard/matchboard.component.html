@@ -1,39 +1,66 @@
 <mat-accordion class="example-headers-align" multi>
-  <mat-expansion-panel [expanded]="true" *ngFor="let match of matches">
+  <mat-expansion-panel [expanded]="false" *ngFor="let match of matches" style="background-color: whitesmoke;">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        {{match.t1.clan}} vs {{match.t2.clan}}
+        <div fxLayout="row" fxLayoutAlign="start center" style="width: 100%;">
+          <div fxFlex="initial" fxLayout="row" fxLayoutAlign="center center">
+            <span
+              style="flex: 1; text-align: right;font-family: Truculenta;font-size: 20px;text-overflow: ellipsis;white-space:nowrap;overflow: hidden;max-width: 160px;">
+              {{match.t1.clan ? match.t1.clan.toUpperCase() : match.t1.name.toUpperCase()}}
+            </span>
+            <span class="{{match.t1.score >= match.t2.score ? 'score-green' : 'score-red'}}"
+              style="padding-left: 20px;font-family: Arial;font-size: 22px;font-weight: bold;">{{match.t1.score}}</span>
+          </div>
+          <div style="padding-left: 20px;padding-right: 20px;" fxFlex="initial">vs</div>
+          <div fxFlex="40" fxLayout="row" fxLayoutAlign="start center">
+            <span class="{{match.t2.score >= match.t1.score ? 'score-green' : 'score-red'}}"
+              style="padding-right: 20px;font-family: Arial;font-size: 22px;font-weight: bold;">{{match.t2.score}}</span>
+            <span
+              style="font-family: Truculenta;font-size: 20px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;max-width: 160px;">
+              {{match.t2.clan ? match.t2.clan.toUpperCase() : match.t2.name.toUpperCase()}}
+            </span>
+          </div>
+        </div>
       </mat-panel-title>
       <mat-panel-description>
-        24th June 2020
+        <!-- 24th June 2020 -->
         <!-- <mat-icon>account_circle</mat-icon> -->
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <div fxLayout="row" fxLayoutAlign="center center" style="width: 100%;">
-      <div fxFlex style="width: 100%;">
-        <div fxLayout="column" fxLayoutAlign="start center" style="padding: 20px;width: 100%;">
-          <div fxFlex class="score">{{match.t1.score}}</div>
+      <div fxFlex style="width: 100%;padding: 20px;">
+        <div fxLayout="column" fxLayoutAlign="center end" style="padding: 20px;width: 100%;">
+          <div fxFlex class="{{match.t1.score >= match.t2.score ? 'score score-green' :'score score-red'}}">
+            {{match.t1.score}}
+          </div>
           <!-- <div class="score">{{t1.name}}</div> -->
-          <div fxFlex class="clan">{{match.t1.clan}}</div>
+          <div fxFlex="10" class="clan" style="flex: 1; text-align: right;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;max-width: 500px;">
+            {{match.t1.clan ? match.t1.clan.toUpperCase() : match.t1.name.toUpperCase()}}
+          </div>
           <!-- <div fxFlex>{{t1.logo}}</div> -->
           <!-- <div fxFlex>{{t1.flagImage}}</div> -->
           <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             style="margin-top: 40px;width: 100%;height: 100%;">
-            <app-leaderboard [members]="match.t1.members" style="width: 100%;"></app-leaderboard>
+            <app-leaderboard [height]="'400px'" [elevation]="true" [members]="match.t1.members" style="width: 100%;">
+            </app-leaderboard>
           </div>
         </div>
       </div>
-      <div fxFlex style="width: 100%;">
-        <div fxLayout="column" fxLayoutAlign="start center" style="padding: 20px;width: 100%;">
-          <div fxFlex class="score">{{match.t2.score}}</div>
+      <div fxFlex style="width: 100%;padding: 20px;">
+        <div fxLayout="column" fxLayoutAlign="center start" style="padding: 20px;width: 100%;">
+          <div fxFlex class="{{match.t2.score >= match.t1.score ? 'score score-green' :'score score-red'}}">
+            {{match.t2.score}}</div>
           <!-- <div class="score">{{t1.name}}</div> -->
-          <div fxFlex class="clan">{{match.t2.clan}}</div>
+          <div fxFlex="10" class="clan" style="text-overflow: ellipsis;overflow: hidden;white-space: nowrap;max-width: 500px;">
+            {{match.t2.clan ? match.t2.clan.toUpperCase() : match.t2.name.toUpperCase()}}
+          </div>
           <!-- <div fxFlex>{{t1.logo}}</div> -->
           <!-- <div fxFlex>{{t1.flagImage}}</div> -->
           <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             style="margin-top: 40px;width: 100%;height: 100%;">
-            <app-leaderboard [members]="match.t2.members" style="width: 100%;"></app-leaderboard>
+            <app-leaderboard [height]="'400px'" [elevation]="true" [members]="match.t2.members" style="width: 100%;">
+            </app-leaderboard>
           </div>
         </div>
       </div>

@@ -8,11 +8,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 @font-face {
-    font-family: oi;
-    src: url(assets/fonts/Oi-Regular.ttf);
+    font-family: Truculenta;
+    src: url(assets/fonts/Truculenta-Medium.ttf);
 }
 
 @font-face {
-    font-family: FrederickatheGreat;
-    src: url(assets/fonts/FrederickatheGreat-Regular.ttf);
+    font-family: LibreBarcode128Text-Regular;
+    src: url(assets/fonts/LibreBarcode128Text-Regular.ttf);
 }

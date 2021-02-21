@@ -135,7 +135,7 @@ function parseDemoFile(f) {
         const match = {
           id: f.substring(f.lastIndexOf('/') + 1, f.lastIndexOf('.')),
           t1: {
-            name: terrorists.teamName,
+            name: 'TERRORIST',
             clan: terrorists.clanName,
             score: terrorists.score,
             members: terrorists.members.map(i => i.name),
@@ -143,7 +143,7 @@ function parseDemoFile(f) {
             flagImage: terrorists.flagImage
           },
           t2: {
-            name: cts.teamName,
+            name: 'COUNTER TERRORIST',
             clan: cts.clanName,
             score: cts.score,
             members: cts.members.map(i => i.name),
@@ -159,7 +159,7 @@ function parseDemoFile(f) {
             console.log('player: ' + i.name);
             const playerScore = {
               teamNumber: i.teamNumber,
-              teamName: i.teamName,
+              teamName: i.teamNumber == 2 ? 'TERRORIST' : 'COUNTER TERRORIST',
               assists: i.assists,
               deaths: i.deaths,
               headShotKills: i.matchStats.map(a => a.headShotKills).reduce((a, b) => a + b),

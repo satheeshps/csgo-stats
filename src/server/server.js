@@ -1,10 +1,13 @@
 const fs = require("fs");
 const express = require('express')
 const http = require('http')
+const https = require('https')
 const bodyParser = require('body-parser')
 const morgan = require('morgan');
 const app = express();
 const sqlite3 = require('sqlite3').verbose();
+const xml2js = require('xml2js');
+const parser = new xml2js.Parser();
 
 init();
 
@@ -180,6 +183,44 @@ app.get('/matches', function (req, res, next) {
   });
 }, function (req, res) {
   return res.send(req.data);
+})
+
+app.get('/avatar/:steamId', function (req, res, next) {
+  const steamId = req.params.steamId;
+  const url = 'https://steamcommunity.com/profiles/' + steamId + '/?xml=1';
+
+  https.get(url, (res) => {
+    let data = '';
+    if (res.statusCode >= 200 && res.statusCode < 400) {
+      res.on('data', function (data_) {
+        data += data_.toString();
+      });
+      res.on('end', function () {
+        if (data) {
+          parser.parseString(data, function (err, result) {
+            if (err) {
+              req.data = '';
+              next();
+              return;
+            }
+
+            req.data = result.profile && result.profile.avatarIcon && result.profile.avatarIcon.length > 0 ? result.profile.avatarIcon[0] : '';
+            next();
+          });
+        } else {
+          req.data = '';
+          next();
+        }
+      });
+    }
+  }).on("error", (err) => {
+    console.log("Error: " + err.message);
+    req.data = '';
+    next();
+  });
+}, function (req, res) {
+  res.writeHead(303, {'Location': req.data});
+  return res.end();
 })
 
 var server = http.createServer(app)

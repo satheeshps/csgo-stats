@@ -9,8 +9,12 @@
     padding: 10px;
 }
 
+.score-green {color: darkgreen}
+.score-red {color: darkred}
+
 .clan {
+    font-family: Truculenta;
     margin-top: 20px;
     padding: 10px;
-    font-size: 58px;
+    font-size: 36px;
 }

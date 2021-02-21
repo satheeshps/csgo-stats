@@ -3,13 +3,13 @@ services:
   csgo-stats:
     restart: always
     container_name: csgo-stats
-    image: csgo-stats
+    image: 'satheeshps/csgo-stats'
     build:
       dockerfile: Dockerfile
       context: .
     volumes:
       - ./dist/assets:/replays
-      - ./dist/db:/db
+      - ./dist/db:/app/db
     environment:
       - BASE_PATH=/app
       - DEM_PATH=/replays
