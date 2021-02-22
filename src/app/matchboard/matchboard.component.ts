@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PlayerRank } from '../leaderboard/leaderboard.component';
+import { map } from 'rxjs/operators';
 
 export class Team {
   name: string;
@@ -35,6 +36,11 @@ export class Team {
   static empty(): Team {
     return new Team().fill('ct', 10, 'counter terrorists', [], 'SDS', 'IN', 'CT');
   }
+
+  static typify(team: Team) {
+    team.score = team.score ? Number.parseInt(team.score.toString()) : team.score;
+    team.members.forEach(m => PlayerRank.typify(m));
+  }
 }
 
 export class Match {
@@ -43,6 +49,11 @@ export class Match {
 
   static empty(): Match {
     return new Match();
+  }
+
+  static typify(match: Match) {
+    Team.typify(match.t1);
+    Team.typify(match.t2);
   }
 }
 
@@ -61,8 +72,10 @@ export class MatchboardComponent implements AfterViewInit {
     // this.matches = [Match.empty(), Match.empty()];
     this.http
       .get<Match[]>('/matches')
+      .pipe(map(a => a.map(e => Object.assign(new Match(), e))))
       .subscribe(
         (restItems: Match[]) => {
+          restItems.forEach(r => Match.typify(r));
           this.matches = restItems;
         }
       )

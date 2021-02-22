@@ -1,6 +1,6 @@
 {
   "name": "csgo-stats",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "dist": "ng build --prod --base-href / && cp package.prod.json dist/package.json && cp -rf src/server dist",
     "ng": "ng",

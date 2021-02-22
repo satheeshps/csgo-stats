@@ -1,4 +1,5 @@
-<mat-table matSort [dataSource]="dataSource" [style.height]="height" class="{{elevation ? 'container mat-elevation-z1': 'container mat-elevation-z0'}}" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+<mat-table matSort [dataSource]="dataSource" [style.height]="height"
+  class="{{elevation ? 'container mat-elevation-z1': 'container mat-elevation-z0'}}" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
   <ng-container matColumnDef="clanTag">
     <mat-header-cell *matHeaderCellDef> Team </mat-header-cell>
     <mat-cell *matCellDef="let element">{{element.clanTag ? element.clanTag + '-' + element.clanName: element.clanName}}
@@ -8,8 +9,7 @@
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <img style="padding-right: 10px;" width="32" height="32"
-        src="{{'avatar/' + element.steamId}}" />
+      <img style="padding-right: 10px;" width="32" height="32" src="{{'avatar/' + element.steamId}}" />
       {{element.name}}
     </mat-cell>
   </ng-container>

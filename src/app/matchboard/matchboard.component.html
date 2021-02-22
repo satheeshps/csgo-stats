@@ -8,12 +8,12 @@
               style="flex: 1; text-align: right;font-family: Truculenta;font-size: 20px;text-overflow: ellipsis;white-space:nowrap;overflow: hidden;max-width: 160px;">
               {{match.t1.clan ? match.t1.clan.toUpperCase() : match.t1.name.toUpperCase()}}
             </span>
-            <span class="{{match.t1.score >= match.t2.score ? 'score-green' : 'score-red'}}"
+            <span [ngClass]="[match.t1.score >= match.t2.score ? 'score-green' : 'score-red']"
               style="padding-left: 20px;font-family: Arial;font-size: 22px;font-weight: bold;">{{match.t1.score}}</span>
           </div>
           <div style="padding-left: 20px;padding-right: 20px;" fxFlex="initial">vs</div>
           <div fxFlex="40" fxLayout="row" fxLayoutAlign="start center">
-            <span class="{{match.t2.score >= match.t1.score ? 'score-green' : 'score-red'}}"
+            <span [ngClass]="[match.t2.score >= match.t1.score ? 'score-green' : 'score-red']"
               style="padding-right: 20px;font-family: Arial;font-size: 22px;font-weight: bold;">{{match.t2.score}}</span>
             <span
               style="font-family: Truculenta;font-size: 20px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;max-width: 160px;">
@@ -42,7 +42,7 @@
           <!-- <div fxFlex>{{t1.flagImage}}</div> -->
           <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             style="margin-top: 40px;width: 100%;height: 100%;">
-            <app-leaderboard [height]="'400px'" [elevation]="true" [members]="match.t1.members" style="width: 100%;">
+            <app-leaderboard [height]="'350px'" [elevation]="true" [members]="match.t1.members" style="width: 100%;">
             </app-leaderboard>
           </div>
         </div>
@@ -59,7 +59,7 @@
           <!-- <div fxFlex>{{t1.flagImage}}</div> -->
           <div fxFlex fxLayout="column" fxLayoutAlign="center center"
             style="margin-top: 40px;width: 100%;height: 100%;">
-            <app-leaderboard [height]="'400px'" [elevation]="true" [members]="match.t2.members" style="width: 100%;">
+            <app-leaderboard [height]="'350px'" [elevation]="true" [members]="match.t2.members" style="width: 100%;">
             </app-leaderboard>
           </div>
         </div>
